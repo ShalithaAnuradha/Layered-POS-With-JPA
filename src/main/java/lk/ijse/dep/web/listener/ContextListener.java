@@ -30,7 +30,8 @@ public class ContextListener implements ServletContextListener {
         System.out.println("Connection pool is being initialized...!");
         try {
             prop.load(this.getClass().getResourceAsStream("/application.properties"));
-            
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("dep-6", prop);
+            sce.getServletContext().setAttribute("emf", emf);
 
             String logFilePath;
             if (prop.getProperty("app.log_dir")!= null){
