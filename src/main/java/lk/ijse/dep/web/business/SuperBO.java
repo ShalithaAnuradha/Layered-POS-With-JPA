@@ -1,9 +1,9 @@
 package lk.ijse.dep.web.business;
 
-import java.sql.Connection;
+import javax.persistence.EntityManager;
 
 public interface SuperBO {
 
-    public void setConnection(Connection connection) throws Exception;
+    void setEntityManager(EntityManager entityManager) throws Exception;
 
 }
