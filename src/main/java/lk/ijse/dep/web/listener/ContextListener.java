@@ -17,6 +17,8 @@ import java.util.logging.*;
 @WebListener
 public class ContextListener implements ServletContextListener {
 
+    EntityManagerFactory emf;
+
     org.slf4j.Logger logger = LoggerFactory.getLogger(ContextListener.class);
 
     public ContextListener() {
@@ -30,7 +32,7 @@ public class ContextListener implements ServletContextListener {
         System.out.println("Connection pool is being initialized...!");
         try {
             prop.load(this.getClass().getResourceAsStream("/application.properties"));
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("dep-6", prop);
+            emf = Persistence.createEntityManagerFactory("dep-6", prop);
             sce.getServletContext().setAttribute("emf", emf);
 
             String logFilePath;
@@ -50,12 +52,6 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        BasicDataSource bds = (BasicDataSource) sce.getServletContext().getAttribute("cp");
-        try {
-            bds.close();
-            System.out.println("Connection pool is closed...!");
-        } catch (SQLException throwables) {
-            logger.error("Failed to close the connection pool", throwables);
-        }
+        emf.close();
     }
 }
