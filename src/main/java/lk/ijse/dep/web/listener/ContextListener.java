@@ -3,6 +3,8 @@ package lk.ijse.dep.web.listener;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -28,20 +30,7 @@ public class ContextListener implements ServletContextListener {
         System.out.println("Connection pool is being initialized...!");
         try {
             prop.load(this.getClass().getResourceAsStream("/application.properties"));
-            BasicDataSource bds = new BasicDataSource();
-            bds.setUsername(prop.getProperty("mysql.username"));
-            bds.setPassword(prop.getProperty("mysql.password"));
-            bds.setUrl(prop.getProperty("mysql.url"));
-            bds.setDriverClassName(prop.getProperty("mysql.driver_classname"));
-            bds.setInitialSize(5);
-            sce.getServletContext().setAttribute("cp", bds);
-
-//            Properties properties = System.getProperties();
-//            for (Object o : properties.keySet()) {
-//                System.out.println(o);
-//            }
-
-//            System.out.println(System.getProperty("catalina.home"));
+            
 
             String logFilePath;
             if (prop.getProperty("app.log_dir")!= null){
