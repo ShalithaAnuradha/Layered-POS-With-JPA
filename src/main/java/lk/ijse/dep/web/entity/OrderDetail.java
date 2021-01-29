@@ -1,16 +1,28 @@
 package lk.ijse.dep.web.entity;
 
-import java.io.Serializable;
+import lombok.*;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Data @AllArgsConstructor @NoArgsConstructor
+@Entity
+@Table(name = "order_detail")
 public class OrderDetail implements SuperEntity {
 
+    @EmbeddedId
     private OrderDetailPK orderDetailPK;
     private int qty;
+    @Column(name = "unit_price")
     private BigDecimal unitPrice;
-
-    public OrderDetail() {
-    }
+    @Setter(AccessLevel.NONE)
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Order order;
+    @Setter(AccessLevel.NONE)
+    @ManyToOne
+    @JoinColumn(name = "item_code", referencedColumnName = "code", insertable = false, updatable = false)
+    private Item item;
 
     public OrderDetail(OrderDetailPK orderDetailPK, int qty, BigDecimal unitPrice) {
         this.orderDetailPK = orderDetailPK;
@@ -24,36 +36,4 @@ public class OrderDetail implements SuperEntity {
         this.unitPrice = unitPrice;
     }
 
-    public OrderDetailPK getOrderDetailPK() {
-        return orderDetailPK;
-    }
-
-    public void setOrderDetailPK(OrderDetailPK orderDetailPK) {
-        this.orderDetailPK = orderDetailPK;
-    }
-
-    public int getQty() {
-        return qty;
-    }
-
-    public void setQty(int qty) {
-        this.qty = qty;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderDetail{" +
-                "orderDetailPK=" + orderDetailPK +
-                ", qty=" + qty +
-                ", unitPrice=" + unitPrice +
-                '}';
-    }
 }
