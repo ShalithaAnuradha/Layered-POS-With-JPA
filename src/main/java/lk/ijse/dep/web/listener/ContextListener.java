@@ -32,6 +32,13 @@ public class ContextListener implements ServletContextListener {
         System.out.println("Connection pool is being initialized...!");
         try {
             prop.load(this.getClass().getResourceAsStream("/application.properties"));
+            BasicDataSource bds = new BasicDataSource();
+            bds.setUsername(prop.getProperty("dbcp.connection.username"));
+            bds.setPassword(prop.getProperty("dbcp.connection.password"));
+            bds.setUrl(prop.getProperty("dbcp.connection.url"));
+            bds.setDriverClassName(prop.getProperty("dbcp.connection.driver_class"));
+            bds.setInitialSize(10);
+            prop.put("hibernate.connection.datasource",bds);
             emf = Persistence.createEntityManagerFactory("dep-6", prop);
             sce.getServletContext().setAttribute("emf", emf);
 
